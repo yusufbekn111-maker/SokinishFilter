@@ -1,0 +1,4 @@
+name: SokinishFilter
+version: 1.0
+main: uz.sokinish.SokinishFilter
+api-version: "1.20"
