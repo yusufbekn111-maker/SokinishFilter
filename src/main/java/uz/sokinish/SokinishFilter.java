@@ -1,9 +1,10 @@
 package uz.sokinish;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -22,14 +23,16 @@ public class SokinishFilter extends JavaPlugin implements Listener {
                     Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE));
         }
         getServer().getPluginManager().registerEvents(this, this);
+        getLogger().info("Filtr yoqildi, so'zlar soni: " + patterns.size());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onChat(AsyncPlayerChatEvent e) {
-        String msg = e.getMessage();
+    public void onChat(AsyncChatEvent e) {
+        Component msg = e.message();
         for (Pattern p : patterns) {
-            msg = p.matcher(msg).replaceAll(m -> "*".repeat(m.group().length()));
+            msg = msg.replaceText(b -> b.match(p)
+                    .replacement((r, c) -> Component.text("*".repeat(r.group().length()))));
         }
-        e.setMessage(msg);
+        e.message(msg);
     }
 }
