@@ -22,7 +22,9 @@ public class SokinishFilter extends JavaPlugin implements Listener {
                     Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE));
         }
         getServer().getPluginManager().registerEvents(this, this);
-         @EventHandler(priority = EventPriority.LOWEST)
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e) {
         String msg = e.getMessage();
         for (Pattern p : patterns) {
